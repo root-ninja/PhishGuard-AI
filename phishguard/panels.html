@@ -1,0 +1,487 @@
+<!-- PhishGuard AI — panels.html partial -->
+<!-- MAIN CONTENT -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title" id="page-title">Dashboard</div>
+        <div class="page-sub" id="page-sub">// threat overview & recent activity</div>
+      </div>
+      <div class="status-pill">
+        <div class="status-dot"></div>
+        System Online
+      </div>
+    </div>
+
+    <!-- ── WELCOME PANEL (Visitor) ── -->
+    <div class="panel" id="panel-welcome">
+      <div style="text-align:center;padding:40px 20px 24px">
+        <div style="font-size:56px;margin-bottom:16px">🛡</div>
+        <div style="font-size:28px;font-weight:800;margin-bottom:8px">Welcome to PhishGuard AI</div>
+        <div style="font-size:14px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:32px">// You are browsing as a Visitor — limited access</div>
+        <div style="display:inline-flex;gap:8px;align-items:center;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);border-radius:99px;padding:8px 20px;margin-bottom:40px">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--green)"></div>
+          <span style="font-size:13px;color:var(--green);font-family:'JetBrains Mono',monospace">Visitor Mode — Read Only</span>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px">
+        <div class="card" style="text-align:center;padding:28px 20px;border-color:rgba(0,229,255,0.15)">
+          <div style="font-size:32px;margin-bottom:12px">⬡</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:6px">Quick URL Scan</div>
+          <div style="font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;line-height:1.6;margin-bottom:16px">Check any website link for phishing — no account needed</div>
+          <button class="save-btn" onclick="showPanel('quickscan')" style="font-size:13px;padding:8px 20px">Try it →</button>
+        </div>
+        <div class="card" style="text-align:center;padding:28px 20px;opacity:0.5;position:relative">
+          <div style="font-size:32px;margin-bottom:12px">📧</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:6px">Email Analysis</div>
+          <div style="font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;line-height:1.6;margin-bottom:16px">Full email phishing detection with NLP</div>
+          <div style="background:rgba(255,204,0,0.1);border:1px solid rgba(255,204,0,0.3);border-radius:6px;padding:6px 12px;font-size:11px;color:var(--yellow);font-family:'JetBrains Mono',monospace">🔒 Requires Account</div>
+        </div>
+        <div class="card" style="text-align:center;padding:28px 20px;opacity:0.5">
+          <div style="font-size:32px;margin-bottom:12px">◷</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:6px">History & Reports</div>
+          <div style="font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;line-height:1.6;margin-bottom:16px">View all past analyses and download reports</div>
+          <div style="background:rgba(255,204,0,0.1);border:1px solid rgba(255,204,0,0.3);border-radius:6px;padding:6px 12px;font-size:11px;color:var(--yellow);font-family:'JetBrains Mono',monospace">🔒 Requires Account</div>
+        </div>
+      </div>
+
+      <div class="card" style="background:linear-gradient(135deg,rgba(0,149,255,0.08),rgba(0,229,255,0.05));border-color:rgba(0,229,255,0.2)">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
+          <div>
+            <div style="font-size:16px;font-weight:700;margin-bottom:6px">Create a free account for full access</div>
+            <div style="font-size:13px;color:var(--muted);font-family:'JetBrains Mono',monospace">Email analysis · History · Reports · Dashboard · Alerts</div>
+          </div>
+          <button class="save-btn" onclick="doLogout();setTimeout(showRegister,50)" style="padding:12px 28px;font-size:14px;white-space:nowrap">✦ Sign Up Free</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── QUICK SCAN PANEL (Visitor) ── -->
+    <div class="panel" id="panel-quickscan">
+      <div class="card" style="border-color:rgba(0,229,255,0.15)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+          <div class="card-title" style="margin:0"><span class="ct-icon">⬡</span> Quick URL Scan</div>
+          <span style="background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.2);border-radius:99px;padding:3px 10px;font-size:11px;color:var(--green);font-family:'JetBrains Mono',monospace">Visitor Access</span>
+        </div>
+        <div style="font-size:13px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:16px">Enter any URL to check if it is a phishing site. No account required.</div>
+        <textarea class="analyse-input" id="visitor-url-input" placeholder="Enter URL to scan...&#10;&#10;https://paypa1-secure.login-verify.com/account" style="min-height:70px"></textarea>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <button class="analyse-btn" id="visitor-scan-btn" onclick="runVisitorScan()">
+            <span id="visitor-btn-text">🔍 Scan URL</span>
+          </button>
+          <span style="font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace">Free · No login needed · Instant results</span>
+        </div>
+      </div>
+
+      <div class="result-box" id="visitor-result-box">
+        <div class="risk-banner" id="visitor-result-banner">
+          <div>
+            <div style="font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:4px">SCAN RESULT</div>
+            <div class="risk-level" id="visitor-result-level">SAFE</div>
+            <div style="font-size:13px;color:var(--muted);margin-top:4px;font-family:'JetBrains Mono',monospace" id="visitor-result-summary"></div>
+          </div>
+          <div class="risk-score-wrap">
+            <div class="risk-score" id="visitor-result-score">0</div>
+            <div class="risk-score-lbl">RISK SCORE / 100</div>
+          </div>
+        </div>
+        <div class="score-bar-wrap">
+          <div class="score-bar" id="visitor-score-bar" style="width:0%;background:var(--green)"></div>
+        </div>
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-title"><span class="ct-icon">⚠</span> Indicators Found</div>
+          <div class="indicators" id="visitor-indicators-list"></div>
+        </div>
+        <div class="card" style="background:linear-gradient(135deg,rgba(0,149,255,0.08),rgba(0,229,255,0.05));border-color:rgba(0,229,255,0.2)">
+          <div style="font-size:14px;font-weight:700;margin-bottom:6px">Want to check emails too?</div>
+          <div style="font-size:13px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:14px">Create a free account to access full email analysis, history, and downloadable reports.</div>
+          <button class="save-btn" onclick="doLogout();setTimeout(showRegister,50)" style="font-size:13px;padding:8px 20px">✦ Create Free Account</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DASHBOARD PANEL ── -->
+    <div class="panel active" id="panel-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card total">
+          <div class="stat-val" id="stat-total">0</div>
+          <div class="stat-lbl">TOTAL CHECKS</div>
+          <div class="stat-delta up" id="stat-total-d">+0 today</div>
+        </div>
+        <div class="stat-card safe">
+          <div class="stat-val" style="color:var(--green)" id="stat-safe">0</div>
+          <div class="stat-lbl">SAFE</div>
+          <div class="stat-delta up" id="stat-safe-d">—</div>
+        </div>
+        <div class="stat-card sus">
+          <div class="stat-val" style="color:var(--yellow)" id="stat-sus">0</div>
+          <div class="stat-lbl">SUSPICIOUS</div>
+          <div class="stat-delta" id="stat-sus-d">—</div>
+        </div>
+        <div class="stat-card phish">
+          <div class="stat-val" style="color:var(--red)" id="stat-phish">0</div>
+          <div class="stat-lbl">PHISHING</div>
+          <div class="stat-delta down" id="stat-phish-d">—</div>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="card">
+          <div class="card-title"><span class="ct-icon">◎</span> Threat Breakdown</div>
+          <div class="donut-wrap">
+            <svg class="donut-svg" width="120" height="120" viewBox="0 0 120 120" id="donut-svg">
+              <circle cx="60" cy="60" r="48" fill="none" stroke="#1e2d42" stroke-width="14"/>
+              <circle id="donut-safe"  cx="60" cy="60" r="48" fill="none" stroke="#00ff88" stroke-width="14" stroke-dasharray="0 302" stroke-linecap="round" transform="rotate(-90 60 60)" style="transition:0.8s"/>
+              <circle id="donut-sus"   cx="60" cy="60" r="48" fill="none" stroke="#ffcc00" stroke-width="14" stroke-dasharray="0 302" stroke-linecap="round" transform="rotate(-90 60 60)" style="transition:0.8s"/>
+              <circle id="donut-phish" cx="60" cy="60" r="48" fill="none" stroke="#ff3d5a" stroke-width="14" stroke-dasharray="0 302" stroke-linecap="round" transform="rotate(-90 60 60)" style="transition:0.8s"/>
+            </svg>
+            <div class="donut-legend">
+              <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> Safe <span id="leg-safe" style="color:var(--muted);font-family:'JetBrains Mono',monospace;margin-left:6px;font-size:12px">0%</span></div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--yellow)"></div> Suspicious <span id="leg-sus" style="color:var(--muted);font-family:'JetBrains Mono',monospace;margin-left:6px;font-size:12px">0%</span></div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> Phishing <span id="leg-phish" style="color:var(--muted);font-family:'JetBrains Mono',monospace;margin-left:6px;font-size:12px">0%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span class="ct-icon">▤</span> Last 7 Days Activity</div>
+          <div class="bar-chart" id="week-bars"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="ct-icon">⚡</span> Recent Analyses</div>
+        <table class="history-table" id="recent-table">
+          <thead><tr>
+            <th>Target</th><th>Type</th><th>Risk Score</th><th>Level</th><th>Time</th>
+          </tr></thead>
+          <tbody id="recent-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── ANALYSE PANEL ── -->
+    <div class="panel" id="panel-analyse">
+      <div class="card">
+        <div class="card-title"><span class="ct-icon">⬡</span> Submit for Analysis</div>
+        <div class="input-tabs">
+          <div class="itab active" id="tab-email" onclick="switchTab('email')">📧 Email</div>
+          <div class="itab" id="tab-url" onclick="switchTab('url')">🔗 URL</div>
+        </div>
+        <div id="email-input-area">
+          <textarea class="analyse-input" id="email-input" placeholder="Paste email content here...&#10;&#10;From: paypal-security@randomsite.com&#10;Subject: URGENT: Your account will be suspended&#10;&#10;Dear user, your PayPal account has been flagged..."></textarea>
+        </div>
+        <div id="url-input-area" style="display:none">
+          <textarea class="analyse-input" id="url-input" placeholder="Enter URL to analyse...&#10;&#10;https://paypa1-secure.login-verify.com/account" style="min-height:60px"></textarea>
+        </div>
+        <button class="analyse-btn" id="analyse-btn" onclick="runAnalysis()">
+          <span id="btn-text">🔍 Analyse Now</span>
+        </button>
+      </div>
+
+      <div class="result-box" id="result-box">
+        <div class="risk-banner" id="result-banner">
+          <div>
+            <div style="font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:4px">ANALYSIS RESULT</div>
+            <div class="risk-level" id="result-level">SAFE</div>
+            <div style="font-size:13px;color:var(--muted);margin-top:4px;font-family:'JetBrains Mono',monospace" id="result-summary"></div>
+          </div>
+          <div class="risk-score-wrap">
+            <div class="risk-score" id="result-score">0</div>
+            <div class="risk-score-lbl">RISK SCORE / 100</div>
+          </div>
+        </div>
+        <div class="score-bar-wrap">
+          <div class="score-bar" id="score-bar" style="width:0%;background:var(--green)"></div>
+        </div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-title"><span class="ct-icon">⚠</span> Indicators Found</div>
+          <div class="indicators" id="indicators-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── HISTORY PANEL ── -->
+    <div class="panel" id="panel-history">
+      <div class="card" style="display:flex;align-items:center;justify-content:space-between;padding:16px 24px;margin-bottom:16px">
+        <div style="display:flex;gap:8px;align-items:center">
+          <input class="setting-input" id="search-input" placeholder="Search..." style="width:200px;padding:8px 12px;margin:0" oninput="filterHistory()">
+          <select class="setting-input" id="filter-level" style="width:140px;padding:8px 12px;margin:0" onchange="filterHistory()">
+            <option value="">All Levels</option>
+            <option value="SAFE">Safe</option>
+            <option value="SUSPICIOUS">Suspicious</option>
+            <option value="PHISHING">Phishing</option>
+          </select>
+          <select class="setting-input" id="filter-type" style="width:120px;padding:8px 12px;margin:0" onchange="filterHistory()">
+            <option value="">All Types</option>
+            <option value="EMAIL">Email</option>
+            <option value="URL">URL</option>
+          </select>
+        </div>
+        <button class="save-btn" onclick="exportHistory()" style="font-size:13px;padding:8px 18px">⬇ Export CSV</button>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <table class="history-table" style="margin:0">
+          <thead><tr>
+            <th style="padding:14px 20px">Target</th>
+            <th>Type</th><th>Risk Score</th><th>Level</th><th>Indicators</th><th>Time</th><th>Action</th>
+          </tr></thead>
+          <tbody id="history-body"></tbody>
+        </table>
+        <div id="history-empty" style="text-align:center;padding:40px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:13px;display:none">
+          No results found. Run an analysis to see history here.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ANALYTICS PANEL ── -->
+    <div class="panel" id="panel-analytics">
+      <div class="stats-grid">
+        <div class="stat-card total">
+          <div class="stat-val" style="font-size:24px" id="ana-acc">95.2%</div>
+          <div class="stat-lbl">MODEL ACCURACY</div>
+          <div class="stat-delta up">+0.3% this month</div>
+        </div>
+        <div class="stat-card safe">
+          <div class="stat-val" style="font-size:24px;color:var(--green)">1.8%</div>
+          <div class="stat-lbl">FALSE POSITIVE RATE</div>
+          <div class="stat-delta up">Below 2% target ✓</div>
+        </div>
+        <div class="stat-card sus">
+          <div class="stat-val" style="font-size:24px;color:var(--yellow)">0.9s</div>
+          <div class="stat-lbl">AVG RESPONSE TIME</div>
+          <div class="stat-delta up">Well within 3s target</div>
+        </div>
+        <div class="stat-card phish">
+          <div class="stat-val" style="font-size:24px;color:var(--accent)">99.7%</div>
+          <div class="stat-lbl">SYSTEM UPTIME</div>
+          <div class="stat-delta up">Above 99.5% target ✓</div>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="card">
+          <div class="card-title"><span class="ct-icon">◈</span> Top Phishing Indicators</div>
+          <div id="indicators-chart" style="display:flex;flex-direction:column;gap:10px"></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="ct-icon">◉</span> Detection by Type</div>
+          <div id="type-chart" style="display:flex;flex-direction:column;gap:12px;margin-top:4px"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="ct-icon">⊛</span> ML Model Status</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+          <div>
+            <div style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:6px">LAST RETRAINED</div>
+            <div style="font-size:14px;font-weight:700">15 Mar 2025</div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:6px">TRAINING SAMPLES</div>
+            <div style="font-size:14px;font-weight:700;font-family:'Space Mono',monospace">11,055</div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:6px">ALGORITHM</div>
+            <div style="font-size:14px;font-weight:700">Random Forest</div>
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <button class="save-btn" onclick="retrain()">🔄 Trigger Retraining</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SETTINGS PANEL ── -->
+    <div class="panel" id="panel-settings">
+      <div class="card">
+        <div class="card-title"><span class="ct-icon">👤</span> Profile Settings</div>
+        <div class="settings-grid">
+          <div class="setting-item">
+            <label class="setting-label">Full Name</label>
+            <input class="setting-input" id="set-name" value="">
+          </div>
+          <div class="setting-item">
+            <label class="setting-label">Email</label>
+            <input class="setting-input" id="set-email" value="" type="email">
+          </div>
+          <div class="setting-item">
+            <label class="setting-label">New Password</label>
+            <input class="setting-input" placeholder="Leave blank to keep current" type="password" id="set-pass">
+          </div>
+          <div class="setting-item">
+            <label class="setting-label">Role</label>
+            <input class="setting-input" id="set-role" value="" disabled>
+          </div>
+        </div>
+        <button class="save-btn" onclick="saveProfile()">Save Profile</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="ct-icon">⚙</span> System Settings</div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-title">Email Alerts</div>
+            <div class="toggle-desc">Send alert when PHISHING is detected</div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="tog-alerts" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-title">PhishTank API</div>
+            <div class="toggle-desc">Use PhishTank blacklist for URL checks</div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="tog-phishtank" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-title">Google Safe Browsing</div>
+            <div class="toggle-desc">Use GSB API for domain reputation</div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="tog-gsb" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-title">Monthly Auto-Retrain</div>
+            <div class="toggle-desc">Automatically retrain ML model monthly</div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="tog-retrain" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <div class="toggle-title">Audit Logging</div>
+            <div class="toggle-desc">Log all system events and user actions</div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="tog-log" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div style="margin-top:16px;display:flex;gap:10px">
+          <div class="setting-item" style="margin:0;flex:1">
+            <label class="setting-label">Risk Threshold — PHISHING (%)</label>
+            <input class="setting-input" id="set-thresh" type="number" value="66" min="50" max="90">
+          </div>
+          <div class="setting-item" style="margin:0;flex:1">
+            <label class="setting-label">Max Requests / Minute</label>
+            <input class="setting-input" id="set-rate" type="number" value="60" min="10" max="200">
+          </div>
+        </div>
+        <button class="save-btn" style="margin-top:16px" onclick="saveSettings()">Save Settings</button>
+      </div>
+    </div>
+
+    <!-- ── ABOUT PANEL ── -->
+    <div class="panel" id="panel-about">
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+          <div style="width:56px;height:56px;background:linear-gradient(135deg,var(--accent2),var(--accent));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px">🛡</div>
+          <div>
+            <div style="font-size:22px;font-weight:800">PhishGuard AI</div>
+            <div style="font-size:13px;color:var(--muted);font-family:'JetBrains Mono',monospace">v1.0.0 — Phishing Detection Tool</div>
+          </div>
+        </div>
+        <p style="font-size:14px;line-height:1.7;color:var(--muted);margin-bottom:16px">
+          PhishGuard AI is a full-stack phishing detection system that analyses emails and URLs to identify phishing attacks using machine learning, NLP, and real-time threat intelligence. It combines rule-based heuristics, a trained Random Forest classifier, and live blacklist lookups to deliver accurate, explainable results.
+        </p>
+        <div class="about-grid">
+          <div>
+            <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--accent)">// DETECTION FEATURES</div>
+            <div style="font-size:13px;color:var(--muted);line-height:2;font-family:'JetBrains Mono',monospace">
+              ✓ SPF / DKIM / DMARC verification<br>
+              ✓ NLP body text analysis<br>
+              ✓ URL feature extraction (15 signals)<br>
+              ✓ WHOIS domain age check<br>
+              ✓ DNS anomaly detection<br>
+              ✓ PhishTank blacklist lookup<br>
+              ✓ Google Safe Browsing API<br>
+              ✓ ML classifier (Random Forest)
+            </div>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--accent)">// TECH STACK</div>
+            <div>
+              <span class="tech-chip"><span class="dot"></span>Python 3.11</span>
+              <span class="tech-chip"><span class="dot"></span>Flask REST API</span>
+              <span class="tech-chip"><span class="dot"></span>React.js</span>
+              <span class="tech-chip"><span class="dot"></span>scikit-learn</span>
+              <span class="tech-chip"><span class="dot"></span>spaCy / NLTK</span>
+              <span class="tech-chip"><span class="dot"></span>BeautifulSoup</span>
+              <span class="tech-chip"><span class="dot"></span>PostgreSQL</span>
+              <span class="tech-chip"><span class="dot"></span>Redis + Celery</span>
+              <span class="tech-chip"><span class="dot"></span>Docker</span>
+              <span class="tech-chip"><span class="dot"></span>JWT Auth</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── USER MANAGEMENT PANEL ── -->
+    <div class="panel" id="panel-users">
+      <div class="card" style="display:flex;align-items:center;justify-content:space-between;padding:16px 24px;margin-bottom:16px">
+        <div style="display:flex;gap:8px;align-items:center">
+          <input class="setting-input" id="user-search" placeholder="Search users..." style="width:220px;padding:8px 12px;margin:0" oninput="filterUsers()">
+          <select class="setting-input" id="user-role-filter" style="width:130px;padding:8px 12px;margin:0" onchange="filterUsers()">
+            <option value="">All Roles</option>
+            <option value="admin">Admin</option>
+            <option value="user">User</option>
+          </select>
+          <select class="setting-input" id="user-status-filter" style="width:130px;padding:8px 12px;margin:0" onchange="filterUsers()">
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="banned">Banned</option>
+          </select>
+        </div>
+        <button class="save-btn" onclick="openAddUser()" style="font-size:13px;padding:8px 18px">+ Add User</button>
+      </div>
+
+      <div class="stats-grid" style="margin-bottom:20px">
+        <div class="stat-card total">
+          <div class="stat-val" id="um-total" style="font-size:28px">0</div>
+          <div class="stat-lbl">TOTAL USERS</div>
+        </div>
+        <div class="stat-card safe">
+          <div class="stat-val" id="um-admins" style="font-size:28px;color:var(--accent)">0</div>
+          <div class="stat-lbl">ADMINS</div>
+        </div>
+        <div class="stat-card sus">
+          <div class="stat-val" id="um-regular" style="font-size:28px;color:var(--muted)">0</div>
+          <div class="stat-lbl">REGULAR USERS</div>
+        </div>
+        <div class="stat-card phish">
+          <div class="stat-val" id="um-banned" style="font-size:28px;color:var(--red)">0</div>
+          <div class="stat-lbl">BANNED</div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:0;overflow:hidden">
+        <table class="history-table" style="margin:0">
+          <thead><tr>
+            <th style="padding:14px 20px">#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Analyses</th>
+            <th>Joined</th>
+            <th>Actions</th>
+          </tr></thead>
+          <tbody id="users-tbody"></tbody>
+        </table>
+        <div id="users-empty" style="text-align:center;padding:40px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:13px;display:none">
+          No users found.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AUDIT LOG PANEL ── -->
+    <div class="panel" id="panel-auditlog">
+      <div class="card" style="display:flex;align-items:center;justify-content:space-between;padding:16px 24px;margin-bottom:16px">
+        <div style="font-size:13px;color:var(--muted);font-family:'JetBrains Mono',monospace">Showing all system events and user actions</div>
+        <button class="save-btn" onclick="clearAuditLog()" style="font-size:13px;padding:8px 18px;background:rgba(255,61,90,0.15);border:1px solid rgba(255,61,90,0.3);color:var(--red)">🗑 Clear Log</button>
+      </div>
+      <div class="card">
+        <div id="audit-log-list"></div>
+        <div id="audit-empty" style="text-align:center;padding:24px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:13px;display:none">No log entries yet.</div>
+      </div>
+    </div>
+
+  </main>

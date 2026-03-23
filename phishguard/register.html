@@ -1,0 +1,58 @@
+<!-- PhishGuard AI — register.html partial -->
+<!-- ═══════════════════════════════════════
+     REGISTER PAGE
+═══════════════════════════════════════ -->
+<div id="register-page" style="display:none">
+  <div class="signin-orb"></div>
+
+  <!-- LEFT HERO (same as login) -->
+  <div class="signin-hero">
+    <div class="hero-badge"><div class="hero-dot"></div> Free Account — Full Access</div>
+    <div class="hero-title">Start protecting<br>yourself <span>today.</span></div>
+    <div class="hero-sub">// Create a free account and get access to full email analysis, URL scanning, history, reports, and alerts.</div>
+    <div class="hero-features">
+      <div class="hero-feature"><div class="hf-icon">✓</div> Unlimited email and URL analysis</div>
+      <div class="hero-feature"><div class="hf-icon">✓</div> Full analysis history with export</div>
+      <div class="hero-feature"><div class="hf-icon">✓</div> Downloadable PDF reports</div>
+      <div class="hero-feature"><div class="hf-icon">✓</div> Real-time phishing alerts</div>
+      <div class="hero-feature"><div class="hf-icon">✓</div> 100% free — no credit card required</div>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hero-stat-val">Free</div><div class="hero-stat-lbl">Always</div></div>
+      <div><div class="hero-stat-val">∞</div><div class="hero-stat-lbl">Scans</div></div>
+      <div><div class="hero-stat-val">30s</div><div class="hero-stat-lbl">Setup Time</div></div>
+    </div>
+  </div>
+
+  <!-- RIGHT FORM PANEL -->
+  <div class="signin-right">
+    <div class="signin-topbar">
+      <div class="signin-topbar-logo">
+        <div class="logo-icon">🛡</div>
+        <div class="logo-text">PhishGuard <span style="color:var(--accent)">AI</span></div>
+      </div>
+      <button onclick="showLogin()" style="background:transparent;border:1px solid var(--border);border-radius:7px;padding:7px 14px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;transition:all 0.15s" onmouseover="this.style.borderColor='rgba(0,229,255,0.3)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">← Sign In</button>
+    </div>
+    <div class="signin-card">
+      <div class="signin-title">Create account</div>
+      <div class="signin-sub">// Join PhishGuard AI today</div>
+      <div class="error-msg" id="reg-error"></div>
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input class="form-input" id="reg-name" type="text" placeholder="Your Name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" id="reg-email" type="email" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" id="reg-pass" type="password" placeholder="Min 6 characters">
+      </div>
+      <button class="btn-primary" onclick="doRegister()">Create Account →</button>
+      <div class="signin-footer" style="margin-top:16px">
+        Already have an account? <a onclick="showLogin()">Sign in</a>
+      </div>
+    </div>
+  </div>
+</div>
