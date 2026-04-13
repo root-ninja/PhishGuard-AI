@@ -15,56 +15,99 @@
 ═══════════════════════════════════════ -->
 <div id="signin-page">
   <div class="signin-orb"></div>
-
-  <!-- LEFT HERO -->
-  <div class="signin-hero">
-    <div class="hero-badge"><div class="hero-dot"></div> AI-Powered Security Platform</div>
-    <div class="hero-title">Detect phishing.<br>Protect <span>everything.</span></div>
-    <div class="hero-sub">// Real-time email and URL analysis powered by machine learning, NLP, and live threat intelligence.</div>
-    <div class="hero-features">
-      <div class="hero-feature"><div class="hf-icon">📧</div> Full email phishing analysis with NLP</div>
-      <div class="hero-feature"><div class="hf-icon">🔗</div> URL inspection with 15 risk signals</div>
-      <div class="hero-feature"><div class="hf-icon">🤖</div> Random Forest ML classifier — 95%+ accuracy</div>
-      <div class="hero-feature"><div class="hf-icon">⚡</div> Results in under 3 seconds</div>
-      <div class="hero-feature"><div class="hf-icon">🛡</div> PhishTank + Google Safe Browsing integration</div>
-    </div>
-    <div class="hero-stats">
-      <div><div class="hero-stat-val">95.2%</div><div class="hero-stat-lbl">Detection Accuracy</div></div>
-      <div><div class="hero-stat-val">&lt;2%</div><div class="hero-stat-lbl">False Positive Rate</div></div>
-      <div><div class="hero-stat-val">3s</div><div class="hero-stat-lbl">Avg. Analysis Time</div></div>
-    </div>
-  </div>
-
-  <!-- RIGHT FORM PANEL -->
-  <div class="signin-right">
-    <div class="signin-topbar">
-      <div class="signin-topbar-logo">
+  <div class="landing-shell">
+    <header class="landing-topbar">
+      <div class="landing-brand">
         <div class="logo-icon">🛡</div>
         <div class="logo-text">PhishGuard <span style="color:var(--accent)">AI</span></div>
       </div>
-      <button onclick="enterAsVisitor()" style="background:transparent;border:1px solid var(--border);border-radius:7px;padding:7px 14px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;transition:all 0.15s" onmouseover="this.style.borderColor='rgba(0,229,255,0.3)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">🌐 Visitor Mode</button>
-    </div>
+      <div class="landing-top-actions">
+        <button class="landing-ghost-btn" onclick="enterAsVisitor()">Visitor Mode</button>
+        <button class="landing-login-btn" onclick="showLogin()">Login</button>
+      </div>
+    </header>
 
-    <div class="signin-card">
-      <div class="signin-title">Sign in</div>
-      <div class="signin-sub">// Access your PhishGuard dashboard</div>
-      <div class="demo-badge" style="margin-bottom:20px">
+    <section class="landing-hero">
+      <div class="landing-copy">
+        <div class="hero-badge"><div class="hero-dot"></div> Intelligent phishing defense for modern teams</div>
+        <div class="hero-title">Defend every inbox, link, and login surface with <span>faster threat detection.</span></div>
+        <div class="hero-sub">PhishGuard AI combines machine learning, domain intelligence, and explainable scoring to help people spot phishing attempts before trust is lost.</div>
+
+        <div class="landing-cta-row">
+          <button class="landing-primary-btn" onclick="showLogin()">Open Secure Login</button>
+          <button class="landing-secondary-btn" onclick="showRegister()">Sign Up Free</button>
+        </div>
+
+        <div class="landing-trust-row">
+          <div class="landing-trust-item">95.2% detection accuracy</div>
+          <div class="landing-trust-item">Live URL and email analysis</div>
+          <div class="landing-trust-item">Explainable risk scoring</div>
+        </div>
+      </div>
+
+      <div class="landing-showcase">
+        <div class="hero-panel hero-panel-primary">
+          <div class="hero-panel-kicker">Threat Overview</div>
+          <div class="hero-panel-heading">Suspicious login page blocked before credential theft.</div>
+          <div class="hero-panel-copy">Scans combine blacklist lookups, sender checks, domain age signals, and content heuristics in one response.</div>
+          <div class="hero-signal-list">
+            <div class="hero-signal"><span class="hero-signal-dot danger"></span> Brand impersonation pattern detected</div>
+            <div class="hero-signal"><span class="hero-signal-dot warn"></span> Redirect chain hides final destination</div>
+            <div class="hero-signal"><span class="hero-signal-dot safe"></span> Explanation ready for analyst review</div>
+          </div>
+        </div>
+
+        <div class="hero-metrics-grid">
+          <div class="hero-metric-card">
+            <div class="hero-stat-val">15+</div>
+            <div class="hero-stat-lbl">URL risk signals per scan</div>
+          </div>
+          <div class="hero-metric-card">
+            <div class="hero-stat-val">3s</div>
+            <div class="hero-stat-lbl">Average response time</div>
+          </div>
+          <div class="hero-metric-card">
+            <div class="hero-stat-val">24/7</div>
+            <div class="hero-stat-lbl">Always-on protection</div>
+          </div>
+          <div class="hero-metric-card">
+            <div class="hero-stat-val">&lt;2%</div>
+            <div class="hero-stat-lbl">False positive rate</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="login-overlay" id="login-overlay" onclick="handleLoginOverlay(event)" aria-hidden="true">
+    <div class="login-modal" role="dialog" aria-modal="true" aria-labelledby="login-modal-title">
+      <button class="login-modal-close" type="button" aria-label="Close login form" onclick="hideLogin()">&times;</button>
+      <div class="signin-title" id="login-modal-title">Welcome back</div>
+      <div class="signin-sub">Sign in only when you need it. Your workspace will open in a secure session.</div>
+      <div class="demo-badge">
         Demo accounts:<br>
-        🔴 Admin &nbsp;&nbsp;— <b>admin@phishguard.ai</b> / <b>admin123</b><br>
-        🟡 Standard — <b>user@demo.com</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ <b>demo123</b>
+        Admin — <b>admin@phishguard.ai</b> / <b>admin123</b><br>
+        Standard — <b>user@demo.com</b> / <b>demo123</b>
       </div>
-      <div class="error-msg" id="login-error">⚠ Invalid email or password. Please try again.</div>
-      <div class="form-group">
-        <label class="form-label">Email Address</label>
-        <input class="form-input" id="login-email" type="email" placeholder="you@example.com" value="admin@phishguard.ai">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input class="form-input" id="login-pass" type="password" placeholder="••••••••" value="admin123">
-      </div>
-      <button class="btn-primary" id="login-btn" onclick="doLogin()">Sign In →</button>
-      <div class="signin-footer" style="margin-top:16px">
-        No account? <a onclick="showRegister()">Create one free</a>
+      <form id="login-form" novalidate>
+        <div class="error-msg" id="login-error" aria-live="polite"></div>
+        <div class="form-group">
+          <label class="form-label" for="login-email">Username or Email</label>
+          <input class="form-input" id="login-email" type="email" placeholder="you@example.com" value="admin@phishguard.ai" autocomplete="username" spellcheck="false">
+          <div class="field-hint" id="login-email-hint">Use a registered email or one of the demo accounts above.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="login-pass">Password</label>
+          <input class="form-input" id="login-pass" type="password" placeholder="••••••••" value="admin123" autocomplete="current-password">
+          <div class="field-hint" id="login-pass-hint">Enter your password to continue.</div>
+        </div>
+        <button class="btn-primary" id="login-btn" type="submit">
+          <span id="login-btn-text">Sign In -></span>
+        </button>
+      </form>
+      <div class="login-modal-links">
+        <a href="#" onclick="hideLogin(); return false;">Forgot Password?</a>
+        <a href="#" onclick="hideLogin(); showRegister(); return false;">Sign Up</a>
       </div>
     </div>
   </div>
@@ -76,53 +119,54 @@
 <div id="register-page" style="display:none">
   <div class="signin-orb"></div>
 
-  <!-- LEFT HERO (same as login) -->
-  <div class="signin-hero">
-    <div class="hero-badge"><div class="hero-dot"></div> Free Account — Full Access</div>
-    <div class="hero-title">Start protecting<br>yourself <span>today.</span></div>
-    <div class="hero-sub">// Create a free account and get access to full email analysis, URL scanning, history, reports, and alerts.</div>
-    <div class="hero-features">
-      <div class="hero-feature"><div class="hf-icon">✓</div> Unlimited email and URL analysis</div>
-      <div class="hero-feature"><div class="hf-icon">✓</div> Full analysis history with export</div>
-      <div class="hero-feature"><div class="hf-icon">✓</div> Downloadable PDF reports</div>
-      <div class="hero-feature"><div class="hf-icon">✓</div> Real-time phishing alerts</div>
-      <div class="hero-feature"><div class="hf-icon">✓</div> 100% free — no credit card required</div>
+  <div class="auth-shell">
+    <div class="auth-hero-panel">
+      <div class="hero-badge"><div class="hero-dot"></div> Create your workspace</div>
+      <div class="hero-title">Start protecting your inboxes and links with a <span>free account.</span></div>
+      <div class="hero-sub">Set up in under a minute, then unlock history, reporting, and explainable scan results across the dashboard.</div>
+      <div class="hero-features">
+        <div class="hero-feature"><div class="hf-icon">✓</div> Unlimited demo-friendly phishing analysis</div>
+        <div class="hero-feature"><div class="hf-icon">✓</div> Personal history and saved reports</div>
+        <div class="hero-feature"><div class="hf-icon">✓</div> Settings and alert preferences</div>
+      </div>
     </div>
-    <div class="hero-stats">
-      <div><div class="hero-stat-val">Free</div><div class="hero-stat-lbl">Always</div></div>
-      <div><div class="hero-stat-val">∞</div><div class="hero-stat-lbl">Scans</div></div>
-      <div><div class="hero-stat-val">30s</div><div class="hero-stat-lbl">Setup Time</div></div>
-    </div>
-  </div>
 
-  <!-- RIGHT FORM PANEL -->
-  <div class="signin-right">
-    <div class="signin-topbar">
-      <div class="signin-topbar-logo">
-        <div class="logo-icon">🛡</div>
-        <div class="logo-text">PhishGuard <span style="color:var(--accent)">AI</span></div>
+    <div class="auth-panel">
+      <div class="signin-topbar">
+        <div class="signin-topbar-logo">
+          <div class="logo-icon">🛡</div>
+          <div class="logo-text">PhishGuard <span style="color:var(--accent)">AI</span></div>
+        </div>
+        <button class="landing-ghost-btn" onclick="showLogin()">Back to Login</button>
       </div>
-      <button onclick="showLogin()" style="background:transparent;border:1px solid var(--border);border-radius:7px;padding:7px 14px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;transition:all 0.15s" onmouseover="this.style.borderColor='rgba(0,229,255,0.3)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">← Sign In</button>
-    </div>
-    <div class="signin-card">
-      <div class="signin-title">Create account</div>
-      <div class="signin-sub">// Join PhishGuard AI today</div>
-      <div class="error-msg" id="reg-error"></div>
-      <div class="form-group">
-        <label class="form-label">Full Name</label>
-        <input class="form-input" id="reg-name" type="text" placeholder="Your Name">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email Address</label>
-        <input class="form-input" id="reg-email" type="email" placeholder="you@example.com">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input class="form-input" id="reg-pass" type="password" placeholder="Min 6 characters">
-      </div>
-      <button class="btn-primary" onclick="doRegister()">Create Account →</button>
-      <div class="signin-footer" style="margin-top:16px">
-        Already have an account? <a onclick="showLogin()">Sign in</a>
+
+      <div class="signin-card">
+        <div class="signin-title">Create account</div>
+        <div class="signin-sub">Set up your secure workspace and continue into the dashboard.</div>
+        <form id="register-form" novalidate>
+          <div class="error-msg" id="reg-error" aria-live="polite"></div>
+          <div class="form-group">
+            <label class="form-label" for="reg-name">Full Name</label>
+            <input class="form-input" id="reg-name" type="text" placeholder="Jane Doe" autocomplete="name">
+            <div class="field-hint" id="reg-name-hint">Use the name you want displayed in the dashboard.</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-email">Email Address</label>
+            <input class="form-input" id="reg-email" type="email" placeholder="you@example.com" autocomplete="email" spellcheck="false">
+            <div class="field-hint" id="reg-email-hint">We will use this email as your sign-in.</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-pass">Password</label>
+            <input class="form-input" id="reg-pass" type="password" placeholder="At least 6 characters" autocomplete="new-password">
+            <div class="field-hint" id="reg-pass-hint">Use at least 6 characters.</div>
+          </div>
+          <button class="btn-primary" id="reg-btn" type="submit">
+            <span id="reg-btn-text">Create Account -></span>
+          </button>
+        </form>
+        <div class="signin-footer">
+          Already have an account? <a href="#" onclick="showLogin(); return false;">Sign in</a>
+        </div>
       </div>
     </div>
   </div>

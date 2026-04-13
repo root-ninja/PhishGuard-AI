@@ -52,7 +52,3 @@ async function runVisitorScan() {
   else if (level === 'SUSPICIOUS') showToast('Suspicious URL detected.', 'info');
   else showToast('URL appears safe.', 'success');
 }
-
-// Allow Enter key on login
-document.getElementById('login-pass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-document.getElementById('login-email').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });

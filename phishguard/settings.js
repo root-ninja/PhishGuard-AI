@@ -6,18 +6,31 @@
 // ═══════════════════════════════════════════════
 function saveProfile() {
   const name  = document.getElementById('set-name').value.trim();
-  const email = document.getElementById('set-email').value.trim();
+  const email = normalizeEmail(document.getElementById('set-email').value);
   const pass  = document.getElementById('set-pass').value;
-  if (!name || !email) { showToast('Name and email cannot be empty.', 'error'); return; }
+
+  if (!name || !email) {
+    showToast('Name and email cannot be empty.', 'error');
+    return;
+  }
+  if (!isValidEmailAddress(email)) {
+    showToast('Enter a valid email address.', 'error');
+    return;
+  }
+
   const users = getUsers();
-  const idx   = users.findIndex(u => u.email === currentUser.email);
+  const idx   = users.findIndex(u => normalizeEmail(u.email) === normalizeEmail(currentUser.email));
   if (idx < 0) return;
+  if (users.some((user, userIdx) => userIdx !== idx && normalizeEmail(user.email) === email)) {
+    showToast('That email is already in use.', 'error');
+    return;
+  }
   users[idx].name  = name;
   users[idx].email = email;
   if (pass) users[idx].pass = pass;
   saveUsers(users);
-  currentUser = users[idx];
-  sessionStorage.setItem('phishguard_session', JSON.stringify(currentUser));
+  currentUser = sanitizeUser(users[idx]);
+  saveSessionUser(currentUser);
   document.getElementById('user-name-display').textContent = name;
   document.getElementById('user-avatar').textContent = name[0].toUpperCase();
   showToast('Profile saved.', 'success');

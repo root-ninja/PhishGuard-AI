@@ -1,16 +1,20 @@
-/* PhishGuard AI — App Init — initUsers, session restore, Enter key
+/* PhishGuard AI — App Init — users, auth UI, session restore
    app.js */
 
 // ═══════════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════════
 initUsers();
+initAuthUI();
 
-// Check existing session
-const saved = sessionStorage.getItem('phishguard_session');
-if (saved) {
-  currentUser = JSON.parse(saved);
+if (restoreSession()) {
   loadApp();
+} else {
+  applyInitialAuthView();
+  const bootMessage = consumeAuthBootMessage();
+  if (bootMessage) {
+    showLogin(bootMessage, 'info');
+  }
 }
 
 

@@ -1,60 +1,39 @@
-<!-- PhishGuard AI — signin.html partial -->
-<!-- ═══════════════════════════════════════
-     SIGN IN PAGE
-═══════════════════════════════════════ -->
-<div id="signin-page">
-  <div class="signin-orb"></div>
-
-  <!-- LEFT HERO -->
-  <div class="signin-hero">
-    <div class="hero-badge"><div class="hero-dot"></div> AI-Powered Security Platform</div>
-    <div class="hero-title">Detect phishing.<br>Protect <span>everything.</span></div>
-    <div class="hero-sub">// Real-time email and URL analysis powered by machine learning, NLP, and live threat intelligence.</div>
-    <div class="hero-features">
-      <div class="hero-feature"><div class="hf-icon">📧</div> Full email phishing analysis with NLP</div>
-      <div class="hero-feature"><div class="hf-icon">🔗</div> URL inspection with 15 risk signals</div>
-      <div class="hero-feature"><div class="hf-icon">🤖</div> Random Forest ML classifier — 95%+ accuracy</div>
-      <div class="hero-feature"><div class="hf-icon">⚡</div> Results in under 3 seconds</div>
-      <div class="hero-feature"><div class="hf-icon">🛡</div> PhishTank + Google Safe Browsing integration</div>
-    </div>
-    <div class="hero-stats">
-      <div><div class="hero-stat-val">95.2%</div><div class="hero-stat-lbl">Detection Accuracy</div></div>
-      <div><div class="hero-stat-val">&lt;2%</div><div class="hero-stat-lbl">False Positive Rate</div></div>
-      <div><div class="hero-stat-val">3s</div><div class="hero-stat-lbl">Avg. Analysis Time</div></div>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="refresh" content="0; url=index.html?view=signin">
+<title>PhishGuard AI Sign In</title>
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background: #070b14;
+    color: #e8f0fe;
+    font-family: Arial, sans-serif;
+  }
+  .card {
+    max-width: 420px;
+    padding: 32px;
+    border: 1px solid #1e2d42;
+    border-radius: 16px;
+    background: #0c1220;
+    text-align: center;
+  }
+  a { color: #00e5ff; }
+</style>
+<script>
+  window.location.replace('index.html?view=signin');
+</script>
+</head>
+<body>
+  <div class="card">
+    <h1>Opening sign in...</h1>
+    <p>The working sign-in flow lives in <code>index.html</code>.</p>
+    <p><a href="index.html?view=signin">Continue to sign in</a></p>
   </div>
-
-  <!-- RIGHT FORM PANEL -->
-  <div class="signin-right">
-    <div class="signin-topbar">
-      <div class="signin-topbar-logo">
-        <div class="logo-icon">🛡</div>
-        <div class="logo-text">PhishGuard <span style="color:var(--accent)">AI</span></div>
-      </div>
-      <button onclick="enterAsVisitor()" style="background:transparent;border:1px solid var(--border);border-radius:7px;padding:7px 14px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;transition:all 0.15s" onmouseover="this.style.borderColor='rgba(0,229,255,0.3)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">🌐 Visitor Mode</button>
-    </div>
-
-    <div class="signin-card">
-      <div class="signin-title">Sign in</div>
-      <div class="signin-sub">// Access your PhishGuard dashboard</div>
-      <div class="demo-badge" style="margin-bottom:20px">
-        Demo accounts:<br>
-        🔴 Admin &nbsp;&nbsp;— <b>admin@phishguard.ai</b> / <b>admin123</b><br>
-        🟡 Standard — <b>user@demo.com</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ <b>demo123</b>
-      </div>
-      <div class="error-msg" id="login-error">⚠ Invalid email or password. Please try again.</div>
-      <div class="form-group">
-        <label class="form-label">Email Address</label>
-        <input class="form-input" id="login-email" type="email" placeholder="you@example.com" value="admin@phishguard.ai">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input class="form-input" id="login-pass" type="password" placeholder="••••••••" value="admin123">
-      </div>
-      <button class="btn-primary" id="login-btn" onclick="doLogin()">Sign In →</button>
-      <div class="signin-footer" style="margin-top:16px">
-        No account? <a onclick="showRegister()">Create one free</a>
-      </div>
-    </div>
-  </div>
-</div>
+</body>
+</html>
