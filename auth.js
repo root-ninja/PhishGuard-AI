@@ -9,13 +9,105 @@ let loginBusy = false;
 let registerBusy = false;
 let authBootMessage = '';
 let loginEscBound = false;
+let firebaseServicesPromise = null;
+
+const FIREBASE_CONFIG = {
+  apiKey: 'AIzaSyCQSSNUO70O_SrNUclqvZMkzFS1BAXOxJA',
+  authDomain: 'phishguard-ai-9d72c.firebaseapp.com',
+  projectId: 'phishguard-ai-9d72c',
+  storageBucket: 'phishguard-ai-9d72c.firebasestorage.app',
+  messagingSenderId: '770700382655',
+  appId: '1:770700382655:web:26db3e241eb6a13710510a',
+  measurementId: 'G-37MGS0BMJH',
+};
 
 function wait(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+async function getFirebaseServices() {
+  if (!firebaseServicesPromise) {
+    firebaseServicesPromise = Promise.all([
+      import('https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js'),
+      import('https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js'),
+      import('https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js'),
+    ]).then(([appModule, authModule, firestoreModule]) => {
+      const { getApps, getApp, initializeApp } = appModule;
+      const {
+        getAuth,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+        updateProfile,
+        deleteUser,
+      } = authModule;
+      const {
+        getFirestore,
+        doc,
+        getDoc,
+        setDoc,
+        serverTimestamp,
+      } = firestoreModule;
+
+      const app = getApps().length ? getApp() : initializeApp(FIREBASE_CONFIG);
+
+      return {
+        auth: getAuth(app),
+        db: getFirestore(app),
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+        updateProfile,
+        deleteUser,
+        doc,
+        getDoc,
+        setDoc,
+        serverTimestamp,
+      };
+    });
+  }
+
+  return firebaseServicesPromise;
+}
+
 function isValidEmailAddress(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizeEmail(email));
+}
+
+function mapRegisterError(error) {
+  switch (error?.code) {
+    case 'auth/email-already-in-use':
+      return 'An account with this email already exists.';
+    case 'auth/invalid-email':
+      return 'Enter a valid email address.';
+    case 'auth/weak-password':
+      return 'Password must be at least 6 characters.';
+    case 'auth/network-request-failed':
+      return 'Network error. Check your connection and try again.';
+    default:
+      return 'We could not create your account right now. Please try again.';
+  }
+}
+
+function syncLocalUserProfile(user) {
+  const users = getUsers();
+  const email = normalizeEmail(user.email);
+  const existingIndex = users.findIndex(item => normalizeEmail(item.email) === email);
+  const nextUser = {
+    ...(existingIndex >= 0 ? users[existingIndex] : {}),
+    uid: user.uid,
+    name: user.name,
+    email,
+    role: user.role || 'user',
+    joined: user.joined || new Date().toLocaleDateString(),
+    banned: false,
+  };
+
+  if (existingIndex >= 0) {
+    users[existingIndex] = nextUser;
+  } else {
+    users.push(nextUser);
+  }
+
+  saveUsers(users);
 }
 
 function setAuthMessage(id, message, type = 'error') {
@@ -142,7 +234,6 @@ function updateRegisterState() {
   const nameOk = name.length >= 2;
   const emailOk = isValidEmailAddress(email);
   const passOk = pass.length >= 6;
-  const duplicate = emailOk && !!findUserByEmail(email);
 
   if (!name) {
     setFieldHint('reg-name-hint', 'Use the name you want displayed in the dashboard.');
@@ -161,11 +252,8 @@ function updateRegisterState() {
   } else if (!emailOk) {
     setFieldHint('reg-email-hint', 'Enter a valid email address.', 'invalid');
     setInputValidity('reg-email', 'invalid');
-  } else if (duplicate) {
-    setFieldHint('reg-email-hint', 'An account with this email already exists.', 'invalid');
-    setInputValidity('reg-email', 'invalid');
   } else {
-    setFieldHint('reg-email-hint', 'Email is available.', 'valid');
+    setFieldHint('reg-email-hint', 'Email format looks good.', 'valid');
     setInputValidity('reg-email', 'valid');
   }
 
@@ -181,10 +269,10 @@ function updateRegisterState() {
   }
 
   if (button) {
-    button.disabled = registerBusy || !nameOk || !emailOk || !passOk || duplicate;
+    button.disabled = registerBusy || !nameOk || !emailOk || !passOk;
   }
 
-  return { name, email, pass, nameOk, emailOk, passOk, duplicate };
+  return { name, email, pass, nameOk, emailOk, passOk };
 }
 
 async function doLogin(event) {
@@ -219,12 +307,36 @@ async function doLogin(event) {
   try {
     await wait(AUTH_DELAY_MS);
 
-    const user = findUserByEmail(email);
+    let user = findUserByEmail(email);
+
     if (!user || user.pass !== pass) {
-      setAuthMessage('login-error', 'Invalid email or password. Please try again.');
-      passInput?.focus();
-      passInput?.select();
-      return;
+      try {
+        const {
+          auth,
+          db,
+          signInWithEmailAndPassword,
+          doc,
+          getDoc,
+        } = await getFirebaseServices();
+        const credential = await signInWithEmailAndPassword(auth, email, pass);
+        const userDoc = await getDoc(doc(db, 'users', credential.user.uid));
+        const profile = userDoc.exists() ? userDoc.data() : {};
+
+        user = {
+          uid: credential.user.uid,
+          name: profile.name || credential.user.displayName || email.split('@')[0],
+          email: credential.user.email || email,
+          role: profile.role || 'user',
+          joined: new Date().toLocaleDateString(),
+          banned: !!profile.banned,
+        };
+        syncLocalUserProfile(user);
+      } catch (error) {
+        setAuthMessage('login-error', 'Invalid email or password. Please try again.');
+        passInput?.focus();
+        passInput?.select();
+        return;
+      }
     }
 
     if (user.banned) {
@@ -250,7 +362,7 @@ async function doRegister(event) {
   if (registerBusy) return;
 
   const state = updateRegisterState();
-  const { name, email, pass, nameOk, emailOk, passOk, duplicate } = state;
+  const { name, email, pass, nameOk, emailOk, passOk } = state;
 
   setAuthMessage('reg-error', '');
 
@@ -264,11 +376,6 @@ async function doRegister(event) {
     document.getElementById('reg-email')?.focus();
     return;
   }
-  if (duplicate) {
-    setAuthMessage('reg-error', 'An account with this email already exists.');
-    document.getElementById('reg-email')?.focus();
-    return;
-  }
   if (!passOk) {
     setAuthMessage('reg-error', 'Password must be at least 6 characters.');
     document.getElementById('reg-pass')?.focus();
@@ -277,37 +384,76 @@ async function doRegister(event) {
 
   registerBusy = true;
   updateRegisterState();
-  setAuthButtonLabel('reg-btn', 'reg-btn-text', true, 'Creating account...', 'Create Account ->');
+  setAuthButtonLabel('reg-btn', 'reg-btn-text', true, 'Creating...', 'Create Account ->');
 
   try {
     await wait(AUTH_DELAY_MS);
+    const {
+      auth,
+      db,
+      createUserWithEmailAndPassword,
+      updateProfile,
+      deleteUser,
+      doc,
+      setDoc,
+      serverTimestamp,
+    } = await getFirebaseServices();
 
-    const users = getUsers();
-    if (users.some(user => normalizeEmail(user.email) === email)) {
-      setAuthMessage('reg-error', 'An account with this email already exists.');
-      return;
+    const credential = await createUserWithEmailAndPassword(auth, email, pass);
+
+    try {
+      await updateProfile(credential.user, { displayName: name });
+      await setDoc(doc(db, 'users', credential.user.uid), {
+        name,
+        email,
+        role: 'user',
+        createdAt: serverTimestamp(),
+      });
+    } catch (error) {
+      try {
+        await deleteUser(credential.user);
+      } catch (cleanupError) {
+        console.warn('Failed to clean up partially created Firebase user.', cleanupError);
+      }
+      throw error;
     }
 
-    users.push({
+    const signedUpUser = {
+      uid: credential.user.uid,
       name,
       email,
-      pass,
       role: 'user',
       joined: new Date().toLocaleDateString(),
       banned: false,
-    });
-    saveUsers(users);
+    };
+
+    currentUser = sanitizeUser(signedUpUser);
+    saveSessionUser(currentUser);
+    syncLocalUserProfile(signedUpUser);
     logAction('CREATE ACCOUNT', email);
 
-    showLogin('Account created. Sign in with your new credentials.', 'success');
-    document.getElementById('login-email').value = email;
-    document.getElementById('login-pass').value = '';
-    updateLoginState();
+    ['reg-name', 'reg-email', 'reg-pass'].forEach(id => {
+      const input = document.getElementById(id);
+      if (input) input.value = '';
+    });
+
+    setAuthMessage('reg-error', '');
+    updateRegisterState();
     showToast('Account created successfully.', 'success');
+    loadApp();
+  } catch (error) {
+    const message = mapRegisterError(error);
+    setAuthMessage('reg-error', message);
+
+    if (error?.code === 'auth/email-already-in-use' || error?.code === 'auth/invalid-email') {
+      document.getElementById('reg-email')?.focus();
+    } else if (error?.code === 'auth/weak-password') {
+      document.getElementById('reg-pass')?.focus();
+    }
   } finally {
     registerBusy = false;
     updateRegisterState();
-    setAuthButtonLabel('reg-btn', 'reg-btn-text', false, 'Creating account...', 'Create Account ->');
+    setAuthButtonLabel('reg-btn', 'reg-btn-text', false, 'Creating...', 'Create Account ->');
   }
 }
 
