@@ -99,6 +99,46 @@ const analytics = getAnalytics(app);
         </div>
       </div>
     </section>
+
+    <section class="prelogin-section" id="prelogin-details" aria-label="Pre-login details">
+      <div class="prelogin-header reveal-on-scroll">
+        <div class="hero-badge"><div class="hero-dot"></div> Details before access</div>
+        <h2>Everything you need before opening the secure workspace.</h2>
+        <p>Review the access options, scan capabilities, and account requirements from the landing page, then choose visitor mode or sign in when you are ready.</p>
+      </div>
+
+      <div class="prelogin-grid">
+        <article class="prelogin-card reveal-on-scroll">
+          <div class="prelogin-card-icon">01</div>
+          <h3>Choose access level</h3>
+          <p>Visitor mode opens quick URL checks with limited history. A user account unlocks email analysis, saved reports, settings, and personal scan history.</p>
+        </article>
+        <article class="prelogin-card reveal-on-scroll">
+          <div class="prelogin-card-icon">02</div>
+          <h3>Prepare scan content</h3>
+          <p>Bring a suspicious URL, email body, sender details, or login link. The dashboard scores the target and explains the indicators found during analysis.</p>
+        </article>
+        <article class="prelogin-card reveal-on-scroll">
+          <div class="prelogin-card-icon">03</div>
+          <h3>Use demo credentials</h3>
+          <p>For testing, open the login form and use the included admin or standard demo account. You can also create a free account from the sign-up screen.</p>
+        </article>
+      </div>
+
+      <div class="prelogin-flow reveal-on-scroll">
+        <div class="prelogin-flow-copy">
+          <div class="hero-panel-kicker">Workspace flow</div>
+          <h3>Scan, explain, save, and act from one focused dashboard.</h3>
+          <p>The app keeps the first screen lightweight while still showing what happens after login: submit a target, review risk signals, export history, and tune detection preferences.</p>
+        </div>
+        <div class="prelogin-flow-steps">
+          <div class="flow-step"><span>Input</span><strong>Email or URL</strong></div>
+          <div class="flow-step"><span>Model</span><strong>Risk scoring</strong></div>
+          <div class="flow-step"><span>Review</span><strong>Indicators</strong></div>
+          <div class="flow-step"><span>Store</span><strong>History</strong></div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <div class="login-overlay" id="login-overlay" onclick="handleLoginOverlay(event)" aria-hidden="true">
@@ -843,6 +883,7 @@ const analytics = getAnalytics(app);
 <script src="settings.js"></script>
 <script src="users.js"></script>
 <script src="visitor.js"></script>
+<script src="prelogin.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
