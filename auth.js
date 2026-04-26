@@ -38,6 +38,7 @@ async function getFirebaseServices() {
         createUserWithEmailAndPassword,
         signInWithEmailAndPassword,
         updateProfile,
+        sendEmailVerification,
         deleteUser,
       } = authModule;
       const {
@@ -56,6 +57,7 @@ async function getFirebaseServices() {
         createUserWithEmailAndPassword,
         signInWithEmailAndPassword,
         updateProfile,
+        sendEmailVerification,
         deleteUser,
         doc,
         getDoc,
@@ -308,8 +310,9 @@ async function doLogin(event) {
     await wait(AUTH_DELAY_MS);
 
     let user = findUserByEmail(email);
+    const localPassHash = user ? await hashPassword(pass) : '';
 
-    if (!user || user.pass !== pass) {
+    if (!user || user.passHash !== localPassHash) {
       try {
         const {
           auth,
@@ -393,6 +396,7 @@ async function doRegister(event) {
       db,
       createUserWithEmailAndPassword,
       updateProfile,
+      sendEmailVerification,
       deleteUser,
       doc,
       setDoc,
@@ -403,6 +407,7 @@ async function doRegister(event) {
 
     try {
       await updateProfile(credential.user, { displayName: name });
+      await sendEmailVerification(credential.user);
       await setDoc(doc(db, 'users', credential.user.uid), {
         name,
         email,

@@ -6,28 +6,6 @@
 <title>PhishGuard AI — Phishing Detection Tool</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
- <script type="module">// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCQSSNUO70O_SrNUclqvZMkzFS1BAXOxJA",
-  authDomain: "phishguard-ai-9d72c.firebaseapp.com",
-  projectId: "phishguard-ai-9d72c",
-  storageBucket: "phishguard-ai-9d72c.firebasestorage.app",
-  messagingSenderId: "770700382655",
-  appId: "1:770700382655:web:26db3e241eb6a13710510a",
-  measurementId: "G-37MGS0BMJH"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-</script>
 </head>
 <body>
 <div class="grid-bg"></div>
@@ -506,6 +484,7 @@ const analytics = getAnalytics(app);
           <div class="itab" id="tab-url" onclick="switchTab('url')">🔗 URL</div>
         </div>
         <div id="email-input-area">
+          <input class="setting-input" id="email-file-input" type="file" accept=".eml,message/rfc822" style="margin-bottom:12px">
           <textarea class="analyse-input" id="email-input" placeholder="Paste email content here...&#10;&#10;From: paypal-security@randomsite.com&#10;Subject: URGENT: Your account will be suspended&#10;&#10;Dear user, your PayPal account has been flagged..."></textarea>
         </div>
         <div id="url-input-area" style="display:none">
@@ -535,6 +514,15 @@ const analytics = getAnalytics(app);
           <div class="card-title"><span class="ct-icon">⚠</span> Indicators Found</div>
           <div class="indicators" id="indicators-list"></div>
         </div>
+        <div class="card report-action-card">
+          <div class="card-title"><span class="ct-icon">!</span> Recommended Action</div>
+          <div class="recommended-action" id="recommended-action"></div>
+          <div class="report-meta" id="result-meta"></div>
+          <div class="report-actions">
+            <button class="save-btn" id="download-report-btn" onclick="downloadCurrentReport()">Download PDF</button>
+            <button class="btn-cancel" onclick="reportFalsePositive()">Report False Positive</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -554,6 +542,7 @@ const analytics = getAnalytics(app);
             <option value="EMAIL">Email</option>
             <option value="URL">URL</option>
           </select>
+          <input class="setting-input" id="filter-date" type="date" style="width:150px;padding:8px 12px;margin:0" onchange="filterHistory()">
         </div>
         <button class="save-btn" onclick="exportHistory()" style="font-size:13px;padding:8px 18px">⬇ Export CSV</button>
       </div>
@@ -568,6 +557,11 @@ const analytics = getAnalytics(app);
         <div id="history-empty" style="text-align:center;padding:40px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:13px;display:none">
           No results found. Run an analysis to see history here.
         </div>
+      </div>
+      <div class="history-pager">
+        <button class="btn-cancel" onclick="changeHistoryPage(-1)">Prev</button>
+        <span id="history-page-label">Page 1</span>
+        <button class="btn-cancel" onclick="changeHistoryPage(1)">Next</button>
       </div>
     </div>
 
@@ -753,6 +747,24 @@ const analytics = getAnalytics(app);
 
     <!-- ── USER MANAGEMENT PANEL ── -->
     <div class="panel" id="panel-users">
+      <div class="card domain-card">
+        <div class="card-title"><span class="ct-icon">!</span> Blacklist / Whitelist</div>
+        <div class="domain-form">
+          <input class="setting-input" id="domain-input" placeholder="domain.example" style="margin:0">
+          <button class="save-btn" onclick="addDomainFromInput('blacklist')">Add Blacklist</button>
+          <button class="btn-cancel" onclick="addDomainFromInput('whitelist')">Add Whitelist</button>
+        </div>
+        <div class="domain-lists">
+          <div>
+            <div class="setting-label">Blacklist</div>
+            <div id="blacklist-list" class="domain-list"></div>
+          </div>
+          <div>
+            <div class="setting-label">Whitelist</div>
+            <div id="whitelist-list" class="domain-list"></div>
+          </div>
+        </div>
+      </div>
       <div class="card" style="display:flex;align-items:center;justify-content:space-between;padding:16px 24px;margin-bottom:16px">
         <div style="display:flex;gap:8px;align-items:center">
           <input class="setting-input" id="user-search" placeholder="Search users..." style="width:220px;padding:8px 12px;margin:0" oninput="filterUsers()">
@@ -873,6 +885,7 @@ const analytics = getAnalytics(app);
 <script src="data.js"></script>
 <script src="utils.js"></script>
 <script src="audit.js"></script>
+<script src="api.js"></script>
 <script src="analysis.js"></script>
 <script src="auth.js"></script>
 <script src="loadapp.js"></script>

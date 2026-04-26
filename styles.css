@@ -956,6 +956,111 @@
   .history-table tr:hover td { background: rgba(255,255,255,0.02); }
   .history-table tr:last-child td { border-bottom: none; }
 
+  .history-pager {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 12px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+
+  .row-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .row-actions button {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .row-actions button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .report-action-card {
+    margin-top: 16px;
+    margin-bottom: 0;
+  }
+
+  .recommended-action {
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.6;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 10px;
+  }
+
+  .report-meta {
+    color: var(--muted);
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 12px;
+  }
+
+  .report-actions,
+  .domain-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .domain-card {
+    margin-bottom: 16px;
+  }
+
+  .domain-lists {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .domain-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .domain-chip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 10px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+
+  .domain-chip button {
+    border: 0;
+    background: transparent;
+    color: var(--red);
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .empty-inline {
+    color: var(--muted);
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
   .badge {
     padding: 3px 10px; border-radius: 99px;
     font-size: 11px; font-weight: 700;

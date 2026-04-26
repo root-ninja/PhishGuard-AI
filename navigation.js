@@ -64,6 +64,6 @@ function showPanel(name) {
   if (name === 'dashboard') refreshDashboard();
   if (name === 'history')   renderHistory();
   if (name === 'analytics') renderAnalytics();
-  if (name === 'users')     { renderUsersTable(); filterUsers(); }
+  if (name === 'users')     { renderDomainLists(); renderUsersTable(); filterUsers(); }
   if (name === 'auditlog')  renderAuditLog();
 }

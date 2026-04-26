@@ -15,6 +15,51 @@ function renderUserStats() {
   document.getElementById('um-banned').textContent  = users.filter(u => u.banned).length;
 }
 
+async function renderDomainLists() {
+  const lists = await loadAdminDomains();
+  saveDomainLists(lists);
+  const blacklistEl = document.getElementById('blacklist-list');
+  const whitelistEl = document.getElementById('whitelist-list');
+  if (!blacklistEl || !whitelistEl) return;
+
+  const render = (items, listName) => (items || []).map(domain => `
+    <div class="domain-chip">
+      <span>${escapeHtml(domain)}</span>
+      <button onclick="removeDomainFromList('${listName}', '${escapeHtml(domain)}')">X</button>
+    </div>`).join('') || '<div class="empty-inline">No domains yet.</div>';
+
+  blacklistEl.innerHTML = render(lists.blacklist || [], 'blacklist');
+  whitelistEl.innerHTML = render(lists.whitelist || [], 'whitelist');
+}
+
+function normalizeDomainInput(value) {
+  const raw = String(value || '').trim().toLowerCase();
+  try {
+    return new URL(raw.includes('://') ? raw : 'https://' + raw).hostname;
+  } catch (error) {
+    return '';
+  }
+}
+
+async function addDomainFromInput(listName) {
+  const input = document.getElementById('domain-input');
+  const domain = normalizeDomainInput(input?.value);
+  if (!domain) {
+    showToast('Enter a valid domain.', 'error');
+    return;
+  }
+  await addAdminDomain(listName, domain);
+  if (input) input.value = '';
+  await renderDomainLists();
+  showToast('Domain list updated.', 'success');
+}
+
+async function removeDomainFromList(listName, domain) {
+  await removeAdminDomain(listName, domain);
+  await renderDomainLists();
+  showToast('Domain removed.', 'info');
+}
+
 function renderUsersTable(list) {
   const tbody = document.getElementById('users-tbody');
   const empty = document.getElementById('users-empty');
@@ -99,7 +144,7 @@ function closeModal() {
   editingEmail = null;
 }
 
-function saveUserModal() {
+async function saveUserModal() {
   const name  = document.getElementById('modal-name').value.trim();
   const email = normalizeEmail(document.getElementById('modal-email').value);
   const pass  = document.getElementById('modal-pass').value;
@@ -123,7 +168,7 @@ function saveUserModal() {
     users[idx].name  = name;
     users[idx].email = email;
     users[idx].role  = role;
-    if (pass) users[idx].pass = pass;
+    if (pass) users[idx].passHash = await hashPassword(pass);
     // Update session if editing self
     if (normalizeEmail(editingEmail) === normalizeEmail(currentUser.email)) {
       currentUser = sanitizeUser(users[idx]);
@@ -138,7 +183,7 @@ function saveUserModal() {
     // Add new
     if (!pass || pass.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; errEl.style.display='block'; return; }
     if (users.find(u => normalizeEmail(u.email) === email)) { errEl.textContent = 'Email already exists.'; errEl.style.display='block'; return; }
-    users.push({ name, email, pass, role, joined: new Date().toLocaleDateString(), banned: false });
+    users.push({ name, email, passHash: await hashPassword(pass), role, joined: new Date().toLocaleDateString(), banned: false });
     saveUsers(users);
     logAction('ADD USER', name + ' (' + email + ')');
     showToast('User added successfully.', 'success');
